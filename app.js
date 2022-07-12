@@ -14,9 +14,10 @@ app.use(express.static('./public'))
 app.use('/api/v1/tasks', tasks);
 app.use(notFound);
 app.use(errorHandlerMiddleware);
+
 const start = async () => {
     try {
-        await connectDB(process.env.MONGO_URI);
+        await connectDB("mongodb+srv://hungofhydra:Hung9090@cluster0.pro4i.mongodb.net/Task_Manager?retryWrites=true&w=majority");
         app.listen(PORT, console.log(`Connected to DB success. Server is listening in ${PORT}...`));
     }
     catch (error) {
