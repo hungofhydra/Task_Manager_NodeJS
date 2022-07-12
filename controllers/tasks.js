@@ -1,38 +1,27 @@
 const Task = require('../models/tasks')
+const asyncWrapper = require('../middleware/async')
+const {createCustomError} = require('../errors')
 
-const getAllTasks = async (req, res) =>{
-    try {
+const getAllTasks = asyncWrapper (async (req, res) =>{
         const tasks = await Task.find().exec();
         res.status(200).json({tasks});
-    } catch (error) {
-        res.status(500).json({'msg' : error});
-    }
-};
+});
 
-const createTask = async (req,res) =>{
-    try {
+const createTask = asyncWrapper (async (req,res) =>{
         const task = await Task.create(req.body)
         res.status(201).json(task);
-    } catch (error) {
-        res.status(500).json({'msg' : error});
-    }
-    
-};
+});
 
-const getTask = async (req,res) =>{
-    try {
+const getTask = asyncWrapper (async (req, res, next) =>{
         const task = await Task.findOne({_id : req.params.id}).exec();
         if (!task) {
-            return res.status(404).json({'message' : `No task with id ${req.params.id}`});
+            return next(createCustomError(`No task with id ${req.params.id}`, 404));
         }
         res.status(200).json({task});
-    } catch (error) {
-        res.status(500).json({'msg' : error});
-    }
-};
+   
+});
 
-const deleteTask = async (req,res) =>{
-    try {
+const deleteTask = asyncWrapper (async (req,res) =>{
         const task = await Task.findOneAndDelete({_id : req.params.id}).exec();
         if (!task) {
             return res.status(404).json({'message' : `No task with id ${req.params.id}`});
@@ -41,12 +30,9 @@ const deleteTask = async (req,res) =>{
             'message' : 'Delete success',
             'task' : null
         });
-    } catch (error) {
-        res.status(500).json({'msg' : error});
-    }
-};
+});
 
-const updateTask = async (req,res) =>{
+const updateTask = asyncWrapper (async (req,res) =>{
     try {
 
         const task = await Task.findOneAndUpdate({_id : req.params.id}, req.body, 
@@ -59,7 +45,7 @@ const updateTask = async (req,res) =>{
         res.status(500).json({'msg' : error});
     }
     
-};
+});
 
 
 module.exports = {
