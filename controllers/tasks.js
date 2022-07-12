@@ -54,11 +54,11 @@ const updateTask = async (req,res) =>{
         if (!task) {
             return res.status(404).json({'message' : `No task with id ${req.params.id}`});
         }
-        res.status(200).json({ 'message' : 'Update completed', 'id' : req.params.id, 'data' : req.body});
+        res.status(200).json({task});
     } catch (error) {
         res.status(500).json({'msg' : error});
     }
-    res.status(200).send();
+    
 };
 
 

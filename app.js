@@ -7,11 +7,8 @@ const PORT = process.env.PORT || 3000;
 
 //Middleware
 app.use(express.json());
+app.use(express.static('./public'))
 
-//routes
-// app.get('/', async (req, res) => {
-//     res.send('Task Manager App');
-// });
 
 app.use('/api/v1/tasks', tasks);
 
