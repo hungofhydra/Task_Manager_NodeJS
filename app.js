@@ -17,7 +17,7 @@ app.use(errorHandlerMiddleware);
 
 const start = async () => {
     try {
-        await connectDB("mongodb+srv://hungofhydra:Hung9090@cluster0.pro4i.mongodb.net/Task_Manager?retryWrites=true&w=majority");
+        await connectDB(process.env.MONGO_URI);
         app.listen(PORT, console.log(`Connected to DB success. Server is listening in ${PORT}...`));
     }
     catch (error) {
